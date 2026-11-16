@@ -5,16 +5,17 @@
 #   - hwind2021/QuantumultX-AdBlock-CN  BlockHttpDNS.list   (阻断 HTTPDNS 绕过)
 #   - ddgksf2013/ddgksf2013  StartUpAds.conf  墨鱼去开屏2.0  (补充分流行)
 #   - DivineEngine 神机规则  Advertising.list  (通用广告/追踪域名, 经 HengLiu2282/DivineEngine 镜像)
+#   - anti-AD  anti-ad-domains.txt  运营商(移动/联通/电信·咪咕/天翼)广告与统计域名
 # UPDATED: 2026-11-16 (rev per review)
 # POLICY: REJECT
 # HOST : 294
-# HOST-SUFFIX : 769
+# HOST-SUFFIX : 789
 # HOST-KEYWORD : 31
 # IP-CIDR : 41
 # IP6-CIDR : 4
 # USER-AGENT : 1
-# TOTAL: 1140
-# DESC: 综合去广告规则：开屏广告 SDK 域名 + 墨鱼补充 + 阻断 HTTPDNS + 神机通用去广告。仅需分流规则，无需 MITM。
+# TOTAL: 1160
+# DESC: 综合去广告规则：开屏广告 SDK 域名 + 墨鱼补充 + 阻断 HTTPDNS + 神机通用去广告 + 运营商广告/统计域名。仅需分流规则，无需 MITM。
 
 # ---------- HOST ----------
 HOST,a.wkanx.com,REJECT
@@ -1168,3 +1169,33 @@ IP6-CIDR,240e:928:1400:10::25/128,REJECT
 # ---------- USER-AGENT ----------
 USER-AGENT,AVOS*,REJECT
 
+# ---------- 运营商广告（移动/联通/电信 · 咪咕/天翼） 新增 ----------
+# 中国移动 · 咪咕视频 cmvideo 广告
+HOST-SUFFIX,ggc.cmvideo.cn,REJECT
+HOST-SUFFIX,ggv.cmvideo.cn,REJECT
+# 中国移动 · 咪咕视频 miguvideo 广告/统计
+HOST-SUFFIX,clog.miguvideo.com,REJECT
+HOST-SUFFIX,crystalapp.miguvideo.com,REJECT
+HOST-SUFFIX,ggx01.miguvideo.com,REJECT
+HOST-SUFFIX,ggx02.miguvideo.com,REJECT
+HOST-SUFFIX,ggx03.miguvideo.com,REJECT
+HOST-SUFFIX,ggx10.miguvideo.com,REJECT
+HOST-SUFFIX,ggxwb.miguvideo.com,REJECT
+HOST-SUFFIX,v.miguvideo.com,REJECT
+# 中国移动 · 统计/营销
+HOST-SUFFIX,sdc.10086.cn,REJECT
+# 中国移动 · 垃圾 CDN
+HOST-SUFFIX,www.10086.cn.baidu.cdn.yiwk.com,REJECT
+# 中国联通 · 广告
+HOST-SUFFIX,m1.ad.10010.com,REJECT
+HOST-SUFFIX,smartad.10010.com,REJECT
+# 中国联通 · 推送
+HOST-SUFFIX,nishub1.10010.com,REJECT
+# 中国联通 · 广告
+HOST-SUFFIX,cten10010.com,REJECT
+# 中国电信 · 统计/天翼视讯
+HOST-SUFFIX,webwebfenxi.189.cn,REJECT
+HOST-SUFFIX,analytics.tv189.cn,REJECT
+# 运营商 DNS 劫持广告（常见劫持跳转）
+HOST-SUFFIX,wscdns.com,REJECT
+HOST-SUFFIX,wscdns.net,REJECT
