@@ -1,23 +1,22 @@
 # NAME: QX-Splash-AdBlock
-# AUTHOR: generated-by-deepseek-harness
+# AUTHOR: qx-splash-rules (aggregated; see NOTICE.md)
 # SOURCES:
 #   - hwind2021/QuantumultX-AdBlock-CN  Splash-Killer.list  (开屏 SDK 域名)
 #   - hwind2021/QuantumultX-AdBlock-CN  BlockHttpDNS.list   (阻断 HTTPDNS 绕过)
 #   - ddgksf2013/ddgksf2013  StartUpAds.conf  墨鱼去开屏2.0  (补充分流行)
 #   - DivineEngine 神机规则  Advertising.list  (通用广告/追踪域名, 经 HengLiu2282/DivineEngine 镜像)
-# UPDATED: 2026-11-16 10:42:37 (UTC+8)
+# UPDATED: 2026-11-16 (rev per review)
 # POLICY: REJECT
-# HOST : 295
+# HOST : 294
 # HOST-SUFFIX : 769
 # HOST-KEYWORD : 31
 # IP-CIDR : 41
 # IP6-CIDR : 4
 # USER-AGENT : 1
-# TOTAL: 1141
+# TOTAL: 1140
 # DESC: 综合去广告规则：开屏广告 SDK 域名 + 墨鱼补充 + 阻断 HTTPDNS + 神机通用去广告。仅需分流规则，无需 MITM。
 
 # ---------- HOST ----------
-HOST,118.89.204.198,REJECT
 HOST,a.wkanx.com,REJECT
 HOST,abema-adx.ameba.jp,REJECT
 HOST,abtest-ch.snssdk.com,REJECT
