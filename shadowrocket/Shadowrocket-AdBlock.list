@@ -1,6 +1,6 @@
 # QX-Splash-AdBlock · Shadowrocket 版
 # 由 QX 综合去开屏规则转换（hwind2021 + 墨鱼去开屏2.0 + 神机/DivineEngine）
-# 规则 1140 条（全 REJECT）｜URL 重写 760 条｜MITM 主机 453 个
+# 规则 1160 条（全 REJECT）｜URL 重写 760 条｜MITM 主机 453 个
 # UPDATED: 2026-11-16 · 详见 NOTICE.md / LICENSE
 
 DOMAIN,a.wkanx.com,REJECT
@@ -1143,3 +1143,23 @@ IP6-CIDR,2402:4e00:1900:1700:0:9554:1ad9:c3a/128,REJECT,no-resolve
 IP6-CIDR,2402:db40:5100:1011::5/128,REJECT,no-resolve
 IP6-CIDR,240e:928:1400:10::25/128,REJECT,no-resolve
 USER-AGENT,AVOS*,REJECT
+DOMAIN-SUFFIX,ggc.cmvideo.cn,REJECT
+DOMAIN-SUFFIX,ggv.cmvideo.cn,REJECT
+DOMAIN-SUFFIX,clog.miguvideo.com,REJECT
+DOMAIN-SUFFIX,crystalapp.miguvideo.com,REJECT
+DOMAIN-SUFFIX,ggx01.miguvideo.com,REJECT
+DOMAIN-SUFFIX,ggx02.miguvideo.com,REJECT
+DOMAIN-SUFFIX,ggx03.miguvideo.com,REJECT
+DOMAIN-SUFFIX,ggx10.miguvideo.com,REJECT
+DOMAIN-SUFFIX,ggxwb.miguvideo.com,REJECT
+DOMAIN-SUFFIX,v.miguvideo.com,REJECT
+DOMAIN-SUFFIX,sdc.10086.cn,REJECT
+DOMAIN-SUFFIX,www.10086.cn.baidu.cdn.yiwk.com,REJECT
+DOMAIN-SUFFIX,m1.ad.10010.com,REJECT
+DOMAIN-SUFFIX,smartad.10010.com,REJECT
+DOMAIN-SUFFIX,nishub1.10010.com,REJECT
+DOMAIN-SUFFIX,cten10010.com,REJECT
+DOMAIN-SUFFIX,webwebfenxi.189.cn,REJECT
+DOMAIN-SUFFIX,analytics.tv189.cn,REJECT
+DOMAIN-SUFFIX,wscdns.com,REJECT
+DOMAIN-SUFFIX,wscdns.net,REJECT
