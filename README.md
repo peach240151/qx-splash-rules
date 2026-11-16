@@ -139,6 +139,21 @@ https://raw.githubusercontent.com/peach240151/qx-splash-rules/main/QX-Lazy-Globa
 
 > ⚠️ 分流版同样会**替换你现有的全部配置**（节点、策略组、分流都会没），导入前务必先导出备份。若已有自己的分流配置，只需把这份的 `[filter_remote]`（7 条）、`[rewrite_remote]`（4 条）、`[mitm]` 三段复制过去，别整份导入。
 
+## 🍎 Shadowrocket（小火箭）版
+
+本仓库另提供一套 **Shadowrocket 原生格式**，由上面的综合规则转换而来，位于 `shadowrocket/` 目录：
+
+| 文件 | 用途 |
+|---|---|
+| `shadowrocket/Shadowrocket-AdBlock.conf` | **完整配置**，直接导入 Shadowrocket（含 `[General]`/`[Rule]`/`[URL Rewrite]`/`[MITM]`，默认 `FINAL,DIRECT` 纯去广告） |
+| `shadowrocket/Shadowrocket-AdBlock.list` | **规则集**（1140 条，Surge/Shadowrocket 格式），用于 `RULE-SET` 远程订阅或合并进自己的配置 |
+| `shadowrocket/Shadowrocket-Rewrite.conf` | **重写补充片段**（仅 `[URL Rewrite]` + `[MITM]`），已有配置时合并用 |
+
+- 完整配置：`https://raw.githubusercontent.com/peach240151/qx-splash-rules/main/shadowrocket/Shadowrocket-AdBlock.conf`
+- 规则集：`https://raw.githubusercontent.com/peach240151/qx-splash-rules/main/shadowrocket/Shadowrocket-AdBlock.list`
+- 转换说明：`HOST→DOMAIN`、`HOST-SUFFIX→DOMAIN-SUFFIX`、`HOST-KEYWORD→DOMAIN-KEYWORD`、`IP-CIDR/IP6-CIDR→…,no-resolve`；**27 条 QX `script-response-body` 脚本规则 Shadowrocket 不兼容，已省略**（其余 760 条 URL 重写生效）。
+- 详细导入步骤与注意事项见 [shadowrocket/README.md](shadowrocket/README.md)。
+
 ## 📊 规则组成
 
 - **HOST / HOST-SUFFIX / HOST-KEYWORD**：广告 SDK 域名直连层拦截（穿山甲 pangolin、广点通 gdt、百青藤 mobads、快手、阿里妈妈 alimama、taobao adashx 埋点、Google/Facebook/AppLovin/Unity/Vungle/ironSource/Mintegral 等）。
