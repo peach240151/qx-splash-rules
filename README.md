@@ -48,4 +48,22 @@
 
 ---
 
-来源与许可见 [NOTICE.md](NOTICE.md) 与 [LICENSE](LICENSE)。
+## 数据来源与致谢
+
+- [hwind2021/QuantumultX-AdBlock-CN](https://github.com/hwind2021/QuantumultX-AdBlock-CN)（Splash-Killer / BlockHttpDNS / AdBlock-Splash / MITM，每日更新）
+- [ddgksf2013/ddgksf2013](https://github.com/ddgksf2013/ddgksf2013) · [墨鱼去开屏 2.0 / StartUpAds.conf](https://ddgksf2013.top/rewrite/StartUpAds.conf)（已抓包 400 余应用去开屏）
+- 神机 DivineEngine（原仓库已下架，采用镜像 [HengLiu2282/DivineEngine](https://github.com/HengLiu2282/DivineEngine) 的 `Quantumult/*/Guard/Advertising` 系列）
+- [Orz-3/QuantumultX · Orz-3.conf](https://github.com/Orz-3/QuantumultX/blob/master/Orz-3.conf)（懒人配置结构参考）
+- [ConnersHua/RuleGo](https://github.com/ConnersHua/RuleGo)（国内外分流规则）
+- [zqzess/rule_for_quantumultX](https://github.com/zqzess/rule_for_quantumultX)（番茄小说去广告 FanQieNovel.snippet / qxrewrite）
+- 运营商广告/统计域名：从 [privacy-protection-tools/anti-AD](https://github.com/privacy-protection-tools/anti-AD) 的 anti-ad-domains.txt 筛出，另含常见 DNS 劫持域名 `wscdns.com/.net`
+- 上游：[blackmatrix7/ios_rule_script](https://github.com/blackmatrix7/ios_rule_script)、[privacy-protection-tools/anti-AD](https://github.com/privacy-protection-tools/anti-AD)
+
+> 墨鱼原项目声明：**本库内容禁止公众号、自媒体进行任何形式的转载或发布**，此处仅作个人使用规则的合并引用。规则数据版权归各上游作者，详见 [NOTICE.md](NOTICE.md) 与 [LICENSE](LICENSE)。
+
+## 免责声明
+
+- 本项目仅供学习交流，规则数据均来自公开开源项目。
+- 请在遵守当地法律法规的前提下使用，请勿用于商业或违法用途。
+- 广告是许多免费服务的主要收入来源，如认可某 App，建议加入白名单或购买会员支持开发者。
+- 使用本规则可能导致部分 App 功能异常，请自行判断风险。
