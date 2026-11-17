@@ -1,6 +1,6 @@
 # QX-Splash-AdBlock · 综合开屏广告拦截规则
 
-面向 **Quantumult X（圈 X）** 的**开屏广告拦截**方案，聚合 **hwind2021 + 墨鱼去开屏 + 神机(DivineEngine) + 运营商广告 + 番茄小说** 五家上游，含两份参考 Orz-3 小白配置结构改写的**懒人配置**（无节点版 / 海外国内分流版），以及三份一次性合并快照。
+面向 **Quantumult X（圈 X）** 的**开屏广告拦截**方案，聚合 **hwind2021 + 墨鱼去开屏 + 神机(DivineEngine) + 运营商广告 + 番茄小说** 五家上游，含两份参考 Orz-3 小白配置结构改写的**懒人配置**（无节点版 / 海外国内分流版），以及三份合并快照（由 GitHub Actions 每日自动重建）。
 
 **懒人配置的分流与重写已全部改为上游每日更新链接**，导入一次即可自动跟进上游更新。
 
@@ -28,14 +28,25 @@ https://raw.githubusercontent.com/peach240151/qx-splash-rules/main/QX-Lazy-Globa
 
 > 只想纯净去开屏、没有节点 → 用 `QX-Lazy.conf`；想同时让海外网站走代理 → 用 `QX-Lazy-Global.conf`。两份互相独立，导入哪份都不会改动另一份。
 
-### 方式二：本仓库合并快照（可选，一次性）
+### 方式二：本仓库合并快照（可选，每日自动重建）
 
 - **分流规则（无需 MITM）**
   `https://raw.githubusercontent.com/peach240151/qx-splash-rules/main/QX-Splash-AdBlock.list`
 - **重写规则（需 MITM）**
   `https://raw.githubusercontent.com/peach240151/qx-splash-rules/main/QX-Splash-AdBlock.conf`
 
-> 这两份是把上游规则下载后合并去重生成的**静态快照**，不会自动更新。想长期保持最新，请用方式一的懒人配置，或直接订阅下方上游链接。
+> 这两份是把上游规则下载后合并去重生成的**快照**，已由 **GitHub Actions 每天 04:00（UTC+8）自动重建并提交**（见下方「🔄 自动同步上游」）。也可以用方式一的懒人配置，或直接订阅下方上游链接。
+
+## 🔄 自动同步上游（GitHub Actions）
+
+方式二的静态快照、`QX-MITM-Hosts.conf` 与 Shadowrocket 版以前需要手动重新生成，现在由仓库内置的 GitHub Actions **每天 04:00（UTC+8）自动重建并提交**：
+
+- 工作流：`.github/workflows/sync-upstream.yml`（定时 `cron: 0 20 * * *`，也可在 Actions 页手动触发 `workflow_dispatch`）。
+- 生成器：`scripts/build.py`（纯 Python 标准库，无第三方依赖），从下方 9 条上游链接重新下载 → 合并去重 → 修正瑕疵 → 按安全策略收敛 MITM → 重写 `QX-Splash-AdBlock.list/.conf`、`QX-MITM-Hosts.conf`、`shadowrocket/*` 及本 README 的计数。
+- 只在检测到真实变化时才提交（忽略 `UPDATED:` 日期行），提交者 `github-actions[bot]`，信息 `chore: auto-sync upstream rules`。
+- 安全兜底：`build.py` 内置 MITM 收敛校验，若某条「非拒绝型」重写目标会因删减而失去覆盖，构建**直接失败而不提交**，避免自动同步引入回归。
+
+> 结论：**懒人配置由客户端每日拉取上游；快照与 Shadowrocket 版由 Actions 在仓库侧每日重建**——两边都能自动跟上上游，无需手动干预。
 
 ## 🔄 上游链接清单（懒人配置实际订阅的内容）
 
@@ -197,7 +208,7 @@ https://raw.githubusercontent.com/peach240151/qx-splash-rules/main/QX-Lazy-Globa
 - **远程脚本已固定版本**：`.conf` 快照里 27 条 `script-*` 依赖的 JS 以及 `resource_parser_url`，均已固定到 commit SHA，避免上游静默改动代码。
 - **会执行远程代码**：`script-*` 重写在 QX 本地执行 JS，可读取解密后的报文；只在你信任上游（ddgksf2013 / app2smile）时使用。
 - **墨鱼订阅有 UA 门禁**：`ddgksf2013.top` 仅对 Quantumult-X UA 返回规则，普通客户端返回网页。不要对该域名套用会改写 UA 的加速前缀，否则会静默失效。
-- **快照是静态文件**：`QX-Splash-AdBlock.list` / `.conf` / `QX-MITM-Hosts.conf` 不会自动更新，需重新生成；只有懒人配置里的 `[filter_remote]` / `[rewrite_remote]` 订阅才会每日拉取上游。
+- **快照每日自动重建**：`QX-Splash-AdBlock.list` / `.conf` / `QX-MITM-Hosts.conf` 由 GitHub Actions 每天 04:00（UTC+8）自动重建并提交（见「🔄 自动同步上游」）；懒人配置里的 `[filter_remote]` / `[rewrite_remote]` 则由客户端每日拉取上游。
 - **授权**：规则数据版权归各上游作者，详见 [NOTICE.md](NOTICE.md) 与 [LICENSE](LICENSE)。墨鱼原项目明确禁止公众号/自媒体转载。
 
 ## 🙏 数据来源与致谢
@@ -238,4 +249,4 @@ QX 的 `[mitm]` 主机名默认写在配置里，改了它就要重新导入整�
 
 - `QX-Lazy.conf` / `QX-Lazy-Global.conf` 订阅的是上游每日更新源，导入后无需重新导入配置。
 - MITM 主机名：加一次 `QX-MITM-Hosts.conf` 订阅即可随订阅自动更新，无需重导整份配置（详见上节）。
-- `QX-Splash-AdBlock.list` / `.conf` 为一次性快照，如需更新需重新生成推送。
+- `QX-Splash-AdBlock.list` / `.conf` / `QX-MITM-Hosts.conf` 与 Shadowrocket 版由 GitHub Actions 每天 04:00（UTC+8）自动重建并提交（详见「🔄 自动同步上游」）。
