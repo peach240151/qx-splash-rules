@@ -1,6 +1,6 @@
 # QX-Splash-AdBlock · 综合开屏广告拦截规则
 
-面向 **Quantumult X（圈 X）** 的**开屏广告拦截**方案，聚合 **hwind2021 + 墨鱼去开屏 + 神机(DivineEngine) + 运营商广告** 四家上游，含两份参考 Orz-3 小白配置结构改写的**懒人配置**（无节点版 / 海外国内分流版），以及三份一次性合并快照。
+面向 **Quantumult X（圈 X）** 的**开屏广告拦截**方案，聚合 **hwind2021 + 墨鱼去开屏 + 神机(DivineEngine) + 运营商广告 + 番茄小说** 五家上游，含两份参考 Orz-3 小白配置结构改写的**懒人配置**（无节点版 / 海外国内分流版），以及三份一次性合并快照。
 
 **懒人配置的分流与重写已全部改为上游每日更新链接**，导入一次即可自动跟进上游更新。
 
@@ -12,11 +12,11 @@
 https://raw.githubusercontent.com/peach240151/qx-splash-rules/main/QX-Lazy.conf
 ```
 
-QX → 右下角「风车」→「配置文件」→ 右上角 `+` → 「从 URL 下载」→ 粘贴上面链接。配置内含 8 条远程资源（4 条分流 + 4 条重写，含 1 条自托管 MITM 主机名订阅），聚合 hwind + 墨鱼 + 神机 + 运营商广告 四家，另含国内 DNS 优化，一次配好。**不需要节点，装了就能去开屏。**
+QX → 右下角「风车」→「配置文件」→ 右上角 `+` → 「从 URL 下载」→ 粘贴上面链接。配置内含 10 条远程资源（5 条分流 + 5 条重写，含 1 条自托管 MITM 主机名订阅），聚合 hwind + 墨鱼 + 神机 + 运营商广告 + 番茄小说 五家，另含国内 DNS 优化，一次配好。**不需要节点，装了就能去开屏。**
 
 > ⚠️ **导入完整配置文件会替换你现有的全部配置**（节点订阅、策略组、分流等），导入前请先长按现有配置导出备份。若只想把规则合并进现有配置，把 `QX-Lazy.conf` 里的 `[filter_remote]`、`[rewrite_remote]`、`[mitm]` 三段复制到你自己的 `.conf` 即可。
 >
-> ⚠️ 想让「秒跳过」生效，还需：设置 → MITM → 开启 → 安装并信任证书。若不想解密流量，把 `[rewrite_remote]` 四条（hwind/墨鱼/神机/MITM 主机名）的 `enabled` 改成 `false`，只用分流即可。
+> ⚠️ 想让「秒跳过」生效，还需：设置 → MITM → 开启 → 安装并信任证书。若不想解密流量，把 `[rewrite_remote]` 五条（hwind/墨鱼/神机/MITM 主机名/番茄小说）的 `enabled` 改成 `false`，只用分流即可。
 
 ### 🌐 方式一·分流版：海外走节点 / 国内直连（需要机场订阅）
 
@@ -48,8 +48,10 @@ https://raw.githubusercontent.com/peach240151/qx-splash-rules/main/QX-Lazy-Globa
 | 分流 | `https://raw.githubusercontent.com/HengLiu2282/DivineEngine/master/Quantumult/Filter/Guard/Advertising.list` | 神机去广告 | 神机(DivineEngine) 通用广告/追踪域名 640 条，原仓库已下架，采用镜像 |
 | 重写 | `https://raw.githubusercontent.com/HengLiu2282/DivineEngine/master/Quantumult/Rewrite/Block/Advertising.conf` | 神机去广告重写 | 神机通用去广告重写 248 条，范围广、较激进 |
 | 分流 | `https://raw.githubusercontent.com/peach240151/qx-splash-rules/main/QX-Carrier-Ads.list` | 运营商广告 | 运营商(移动/联通/电信·咪咕/天翼)广告与统计域名 22 条，自托管、每日更新 |
+| 分流 | `https://raw.githubusercontent.com/zqzess/rule_for_quantumultX/master/QuantumultX/snippet/FanQieNovel.snippet` | 番茄小说 | 番茄小说去广告域名/网段 29 条（host/host-suffix/ip-cidr），zqzess 上游 |
+| 重写 | `https://raw.githubusercontent.com/zqzess/rule_for_quantumultX/master/QuantumultX/rewrite/FanQieNovel.qxrewrite` | 番茄小说重写 | 番茄小说章末/视频/图片广告 16 条 URL 重写（自带 MITM hostname），zqzess 上游 |
 
-七条均设 `update-interval=86400`（每日自动拉取）。墨鱼那条加 `opt-parser=true`（与 Orz-3 原版一致）。注意：墨鱼站点按请求 UA 返回不同内容——QX 的重写请求自带 `Quantumult-X` UA 因而拿到真规则；这是**站点服务端行为**，与 `opt-parser` 无关（`opt-parser` 只是把 Surge 格式转成 QX 格式）。
+九条均设 `update-interval=86400`（每日自动拉取）。墨鱼那条加 `opt-parser=true`（与 Orz-3 原版一致）。注意：墨鱼站点按请求 UA 返回不同内容——QX 的重写请求自带 `Quantumult-X` UA 因而拿到真规则；这是**站点服务端行为**，与 `opt-parser` 无关（`opt-parser` 只是把 Surge 格式转成 QX 格式）。
 
 分流版额外订阅 4 条 [ConnersHua/RuleGo](https://github.com/ConnersHua/RuleGo) 规则（见下表），`update-interval=172800`、`opt-parser=true`（RuleGo 为 Surge 格式，需解析器转换）。
 
@@ -74,16 +76,25 @@ https://raw.githubusercontent.com/peach240151/qx-splash-rules/main/QX-Lazy-Globa
 
 > 只收广告 / 统计 / 推送**子域**，故意**不拦** `10086.cn` / `10010.com` / `189.cn` 主域，避免影响营业厅、登录、充值等正常服务。共 22 条，全 `REJECT`，可单独订阅：`https://raw.githubusercontent.com/peach240151/qx-splash-rules/main/QX-Carrier-Ads.list`。
 
+## 📖 番茄小说去广告（本次新增）
+
+用户指定的 [zqzess/rule_for_quantumultX](https://github.com/zqzess/rule_for_quantumultX) 番茄小说规则，已合入快照并作为上游订阅加入懒人配置：
+
+- **分流**（`FanQieNovel.snippet`，29 条）：`p6/p9-ad-sign.byteimg.com`、`i.snssdk.com`、`i-lq.snssdk.com`、`dig.bdurl.net`、`zijieapi.com`、`bytedance.com`、`pglstatp-toutiao.com`、`byteorge.com`、`bytegoofy.com` 等广告/日志域名 + 6 个 IP 段，全 `REJECT`。
+- **重写**（`FanQieNovel.qxrewrite`，16 条）：`pangolin-sdk-toutiao` 广告接口、`pglstatp/pstatp` 广告包与图片、`byteimg` 广告图、`snssdk` 广告与视频、`fqnovelvod` 视频等 `url reject`；自带 `hostname` 行（11 个主机）由 QX 自动并入 MITM。
+
+> 订阅地址：`https://raw.githubusercontent.com/zqzess/rule_for_quantumultX/master/QuantumultX/snippet/FanQieNovel.snippet`（分流）与 `https://raw.githubusercontent.com/zqzess/rule_for_quantumultX/master/QuantumultX/rewrite/FanQieNovel.qxrewrite`（重写）。快照与 Shadowrocket 版均已包含。
+
 ## 📦 文件说明
 
 | 文件 | 类型 | 是否需 MITM | 说明 |
 |---|---|---|---|
-| `QX-Lazy.conf` | 完整配置 | 重写部分需要 | **懒人配置（无节点版）**。参考 Orz-3 骨架改写，去掉依赖机场节点的策略组，不装节点也能用；8 条上游订阅（含 MITM 主机名订阅，MITM 不再内联）+ 国内 DNS 优化，`final, direct`。 |
+| `QX-Lazy.conf` | 完整配置 | 重写部分需要 | **懒人配置（无节点版）**。参考 Orz-3 骨架改写，去掉依赖机场节点的策略组，不装节点也能用；10 条上游订阅（含 MITM 主机名订阅，MITM 不再内联）+ 国内 DNS 优化，`final, direct`。 |
 | `QX-Lazy-Global.conf` | 完整配置 | 重写部分需要 | **懒人配置（海外/国内分流版）**。在上面基础上加 `[server_remote]` 占位 + 4 条 RuleGo 分流规则，`final, proxy`；需自备机场订阅。 |
-| `QX-Splash-AdBlock.list` | 分流规则 | ❌ 不需要 | 一次性快照。1160 条去重规则：294 HOST + 789 HOST-SUFFIX + 31 HOST-KEYWORD + 41 IP-CIDR + 4 IP6-CIDR + 1 USER-AGENT，含墨鱼补充分流行、神机通用去广告域名与运营商广告/统计域名，并阻断 HTTPDNS 绕过。 |
+| `QX-Splash-AdBlock.list` | 分流规则 | ❌ 不需要 | 一次性快照。1183 条去重规则：305 HOST + 795 HOST-SUFFIX + 31 HOST-KEYWORD + 47 IP-CIDR + 4 IP6-CIDR + 1 USER-AGENT，含墨鱼补充分流行、神机通用去广告域名、运营商广告/统计域名与番茄小说去广告，并阻断 HTTPDNS 绕过。 |
 | `QX-Carrier-Ads.list` | 分流规则 | ❌ 不需要 | **运营商广告/统计域名**（自托管）22 条：移动·咪咕/联通/电信·天翼 的广告、统计、推送子域 + 常见 DNS 劫持域名；全 REJECT。懒人配置已作为第 4 条分流源自动订阅。 |
-| `QX-Splash-AdBlock.conf` | 重写规则 | ✅ 需要 | 一次性快照。787 条重写（原始 835 条，按 URL pattern 去重并修正瑕疵后；来源 hwind 112 + 墨鱼 475 + 神机 248）+ 453 个 MITM 主机（已按安全策略收敛）。 |
-| `QX-MITM-Hosts.conf` | 重写资源 | — | **MITM 主机名订阅（免重导）**。本身是一条重写资源，只托管 453 个 MITM 主机名；在 QX「设置 → 重写 → 添加资源」加一次后，QX 会自动合并其中的 hostname 并随订阅每日更新，以后更新主机名无需重导整份配置。 |
+| `QX-Splash-AdBlock.conf` | 重写规则 | ✅ 需要 | 一次性快照。803 条重写（原始 835 条，按 URL pattern 去重并修正瑕疵后；来源 hwind 112 + 墨鱼 475 + 神机 248 + 番茄小说 16）+ 464 个 MITM 主机（已按安全策略收敛）。 |
+| `QX-MITM-Hosts.conf` | 重写资源 | — | **MITM 主机名订阅（免重导）**。本身是一条重写资源，只托管 464 个 MITM 主机名；在 QX「设置 → 重写 → 添加资源」加一次后，QX 会自动合并其中的 hostname 并随订阅每日更新，以后更新主机名无需重导整份配置。 |
 
 ## 🚀 使用方法（单独订阅快照时）
 
@@ -106,7 +117,7 @@ https://raw.githubusercontent.com/peach240151/qx-splash-rules/main/QX-Lazy-Globa
    ```
 2. 「设置」→「MITM」→ 开启，并把 `.conf` 里 `[mitm]` 段的 `hostname` 全部加入，然后安装并信任证书。
 
-> ⚠️ MITM 主机清单仍有 453 条，开启后 QX 会解密这些域名的流量（已剔除银行/政务/医疗/支付类）。若只想去开屏、担心性能或隐私，可只用分流规则，或按需裁剪 hostname。
+> ⚠️ MITM 主机清单仍有 464 条，开启后 QX 会解密这些域名的流量（已剔除银行/政务/医疗/支付类）。若只想去开屏、担心性能或隐私，可只用分流规则，或按需裁剪 hostname。
 >
 > ⚠️ 部分重写规则为 `script-response-body`，依赖 [ddgksf2013/Scripts](https://github.com/ddgksf2013/Scripts) 仓库中的 JS 脚本，请确保 QX 能访问 GitHub raw。
 
@@ -150,7 +161,7 @@ https://raw.githubusercontent.com/peach240151/qx-splash-rules/main/QX-Lazy-Globa
 - **顺序敏感性**：`Direct+.list`（强制直连修正）要放在 `Proxy.list` 之前，否则国内 CDN/统计域名会被误送进代理；`final` 永远最后。
 - **DNS**：`[dns]` 用国内 DNS（119.29.29.29 / 180.184.1.1 / 223.5.5.5）并配了 `circumvent-ipv4-answer` 污染 IP 黑名单；走 `proxy` 的连接由节点远端解析，本地 DNS 结果不影响海外域名。
 
-> ⚠️ 分流版同样会**替换你现有的全部配置**（节点、策略组、分流都会没），导入前务必先导出备份。若已有自己的分流配置，只需把这份的 `[filter_remote]`（8 条）、`[rewrite_remote]`（4 条）、`[mitm]` 三段复制过去，别整份导入。
+> ⚠️ 分流版同样会**替换你现有的全部配置**（节点、策略组、分流都会没），导入前务必先导出备份。若已有自己的分流配置，只需把这份的 `[filter_remote]`（9 条）、`[rewrite_remote]`（5 条）、`[mitm]` 三段复制过去，别整份导入。
 
 ## 🍎 Shadowrocket（小火箭）版
 
@@ -159,12 +170,12 @@ https://raw.githubusercontent.com/peach240151/qx-splash-rules/main/QX-Lazy-Globa
 | 文件 | 用途 |
 |---|---|
 | `shadowrocket/Shadowrocket-AdBlock.conf` | **完整配置**，直接导入 Shadowrocket（含 `[General]`/`[Rule]`/`[URL Rewrite]`/`[MITM]`，默认 `FINAL,DIRECT` 纯去广告） |
-| `shadowrocket/Shadowrocket-AdBlock.list` | **规则集**（1160 条，Surge/Shadowrocket 格式），用于 `RULE-SET` 远程订阅或合并进自己的配置 |
+| `shadowrocket/Shadowrocket-AdBlock.list` | **规则集**（1183 条，Surge/Shadowrocket 格式），用于 `RULE-SET` 远程订阅或合并进自己的配置 |
 | `shadowrocket/Shadowrocket-Rewrite.conf` | **重写补充片段**（仅 `[URL Rewrite]` + `[MITM]`），已有配置时合并用 |
 
 - 完整配置：`https://raw.githubusercontent.com/peach240151/qx-splash-rules/main/shadowrocket/Shadowrocket-AdBlock.conf`
 - 规则集：`https://raw.githubusercontent.com/peach240151/qx-splash-rules/main/shadowrocket/Shadowrocket-AdBlock.list`
-- 转换说明：`HOST→DOMAIN`、`HOST-SUFFIX→DOMAIN-SUFFIX`、`HOST-KEYWORD→DOMAIN-KEYWORD`、`IP-CIDR/IP6-CIDR→…,no-resolve`；**27 条 QX `script-response-body` 脚本规则 Shadowrocket 不兼容，已省略**（其余 760 条 URL 重写生效）。
+- 转换说明：`HOST→DOMAIN`、`HOST-SUFFIX→DOMAIN-SUFFIX`、`HOST-KEYWORD→DOMAIN-KEYWORD`、`IP-CIDR/IP6-CIDR→…,no-resolve`；**27 条 QX `script-response-body` 脚本规则 Shadowrocket 不兼容，已省略**（其余 776 条 URL 重写生效）。
 - 详细导入步骤与注意事项见 [shadowrocket/README.md](shadowrocket/README.md)。
 
 ## 📊 规则组成
@@ -174,6 +185,7 @@ https://raw.githubusercontent.com/peach240151/qx-splash-rules/main/QX-Lazy-Globa
 - **HTTPDNS 阻断**：防止头条/阿里/腾讯系 App 用 HTTPDNS 绕过本地 DNS 解析广告域名（不拦这一层，前面效果会打折）。
 - **神机通用去广告**：DivineEngine Advertising.list 的 640 条域名（追踪、广告 SDK、埋点等），补充开屏之外的常规广告，较激进，遇误杀可关闭该订阅。
 - **运营商广告**：中国移动·咪咕/联通/电信·天翼 的广告、统计、推送子域（`m1.ad.10010.com`、`ggx*.miguvideo.com`、`analytics.tv189.cn` 等）+ 常见 DNS 劫持域名 `wscdns.com/.net`，共 22 条，仅拦子域不碰主域，避免误伤营业厅/登录。
+- **番茄小说去广告（zqzess）**：番茄小说阅读器去章末/视频/图片广告——29 条分流（含 bytedance/pglstatp/ad-sign/pstatp 等域名与 6 个 IP 段）+ 16 条 URL 重写（pglstatp/pstatp/byteimg/snssdk 等），需对相关主机开 MITM。
 - **重写 A（hwind2021）**：对 `/splash/*`、`startup ad`、各 App 具体开屏接口（美团/京东/淘宝/携程/小红书/知乎/微博/高德 等）返回空响应。
 - **重写 B（墨鱼去开屏 2.0）**：逐 App 整理的开屏接口，400+ 应用按 `0~9 / A~Z` 分组并保留 `# > App名` 注释，便于排查与加白名单。
 - **重写 C（神机 / DivineEngine）**：通用去广告重写 248 条（各 App 广告接口、`mp.weixin.qq.com` 广告字段等），范围比开屏更广、较激进。
@@ -196,6 +208,7 @@ https://raw.githubusercontent.com/peach240151/qx-splash-rules/main/QX-Lazy-Globa
 - 懒人配置结构参考：[Orz-3/QuantumultX · Orz-3.conf](https://github.com/Orz-3/QuantumultX/blob/master/Orz-3.conf)
 - 国内外分流规则：[ConnersHua/RuleGo](https://github.com/ConnersHua/RuleGo)（Surge/Ruleset）
 - 运营商广告/统计域名：从 [privacy-protection-tools/anti-AD](https://github.com/privacy-protection-tools/anti-AD) 的 anti-ad-domains.txt 筛出，另含常见 DNS 劫持域名 `wscdns.com/.net`
+- 番茄小说去广告规则：[zqzess/rule_for_quantumultX](https://github.com/zqzess/rule_for_quantumultX)（FanQieNovel.snippet / FanQieNovel.qxrewrite）
 - 上游：[blackmatrix7/ios_rule_script](https://github.com/blackmatrix7/ios_rule_script)、[privacy-protection-tools/anti-AD](https://github.com/privacy-protection-tools/anti-AD)
 
 > 墨鱼原项目声明：**本库内容禁止公众号、自媒体进行任何形式的转载或发布**，此处仅作个人使用规则的合并引用，如需引用请遵守原作者要求并注明出处。
@@ -213,7 +226,7 @@ https://raw.githubusercontent.com/peach240151/qx-splash-rules/main/QX-Lazy-Globa
 
 QX 的 `[mitm]` 主机名默认写在配置里，改了它就要重新导入整份配置。官方支持**重写资源自带 `hostname` 行并自动合并**（见 QX `sample-import-rewrite.snippet`），所以可以把主机名单独做成一条订阅：
 
-1. 本仓库的 `QX-MITM-Hosts.conf` 就是一条重写资源，只托管 453 个 MITM 主机名。
+1. 本仓库的 `QX-MITM-Hosts.conf` 就是一条重写资源，只托管 464 个 MITM 主机名。
 2. **新版懒人配置（`QX-Lazy.conf` / `QX-Lazy-Global.conf`）已内置这条订阅**，导入即生效，无需任何手动操作。
 3. 如果你**沿用的是旧配置、又不想重导**：在 QX「设置 → 重写 → 右上角 ＋ → 添加资源」手动加一次：
    `https://raw.githubusercontent.com/peach240151/qx-splash-rules/main/QX-MITM-Hosts.conf`，tag 随意（如 `MITM主机名`）。
