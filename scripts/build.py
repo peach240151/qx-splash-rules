@@ -494,7 +494,7 @@ def update_readme(r, changed):
     c = r['counts']
     def sub(pat, repl, flags=0):
         nonlocal t
-        t2, n = re.subn(pat, repl, t, count=1, flags=flags)
+        t2, n = re.subn(pat, repl, t, count=0, flags=flags)
         if n:
             t = t2
         return n
