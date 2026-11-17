@@ -1,6 +1,6 @@
 # QX-Splash-AdBlock · Shadowrocket 版
 # 由 QX 综合去开屏规则转换（hwind2021 + 墨鱼去开屏2.0 + 神机/DivineEngine）
-# 规则 1160 条（全 REJECT）｜URL 重写 760 条｜MITM 主机 453 个
+# 规则 1183 条（全 REJECT）｜URL 重写 776 条｜MITM 主机 464 个
 # UPDATED: 2026-11-16 · 详见 NOTICE.md / LICENSE
 
 DOMAIN,a.wkanx.com,REJECT
@@ -1163,3 +1163,26 @@ DOMAIN-SUFFIX,webwebfenxi.189.cn,REJECT
 DOMAIN-SUFFIX,analytics.tv189.cn,REJECT
 DOMAIN-SUFFIX,wscdns.com,REJECT
 DOMAIN-SUFFIX,wscdns.net,REJECT
+DOMAIN,p6-ad-sign.byteimg.com,REJECT
+DOMAIN,p9-ad-sign.byteimg.com,REJECT
+DOMAIN,dig.bdurl.net,REJECT
+DOMAIN-SUFFIX,zijieapi.com,REJECT
+DOMAIN,activity-ag.awemeughun.com,REJECT
+DOMAIN,mcs.snssdk.com,REJECT
+DOMAIN,is.snssdk.com,REJECT
+DOMAIN,msync-im1-vip6-std.easemob.com,REJECT
+DOMAIN,apd-pcdnwxlogin.teg.tencent-cloud.net,REJECT
+DOMAIN,api.iegadp.qq.com,REJECT
+DOMAIN,sf3-ttcdn-tos.pstatp.com,REJECT
+DOMAIN-SUFFIX,default.ixigua.com,REJECT
+DOMAIN,v6-novelapp.ixigua.com,REJECT
+DOMAIN-SUFFIX,novelapp.ixigua.com,REJECT
+DOMAIN-SUFFIX,byteorge.com,REJECT
+DOMAIN-SUFFIX,bytegoofy.com,REJECT
+DOMAIN-SUFFIX,bytedance.com,REJECT
+IP-CIDR,49.71.37.101/32,REJECT,no-resolve
+IP-CIDR,117.71.105.23/32,REJECT,no-resolve
+IP-CIDR,218.94.207.205/32,REJECT,no-resolve
+IP-CIDR,117.92.229.188/32,REJECT,no-resolve
+IP-CIDR,101.36.166.16/32,REJECT,no-resolve
+IP-CIDR,180.96.2.114/32,REJECT,no-resolve
