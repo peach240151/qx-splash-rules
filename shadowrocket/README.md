@@ -7,7 +7,7 @@
 | 文件 | 用途 |
 |---|---|
 | `Shadowrocket-AdBlock.conf` | **完整配置**。含 `[General]` / `[Rule]` / `[URL Rewrite]` / `[MITM]`，默认 `FINAL,DIRECT`（纯去广告，不接管代理）。适合直接导入、开箱即用。 |
-| `Shadowrocket-AdBlock.list` | **纯规则集**（1160 条，Surge/Shadowrocket 规则格式，全部 `REJECT`）。用于远程 `RULE-SET` 订阅，或并入你自己已有的配置。 |
+| `Shadowrocket-AdBlock.list` | **纯规则集**（1183 条，Surge/Shadowrocket 规则格式，全部 `REJECT`）。用于远程 `RULE-SET` 订阅，或并入你自己已有的配置。 |
 | `Shadowrocket-Rewrite.conf` | **重写补充片段**（仅 `[URL Rewrite]` + `[MITM]` 两段）。你已有自己的配置时，把这两段合并进去即可。 |
 
 ## 导入方式
@@ -30,8 +30,8 @@ RULE-SET,https://raw.githubusercontent.com/peach240151/qx-splash-rules/main/shad
 
 ## 重要注意事项
 
-1. **760 条 URL 重写需要 MITM**：不开启 MITM 并信任证书，重写（`url reject*`）不会生效；此时只有分流规则（1160 条 `REJECT`）起作用。
-2. **脚本规则已省略**：QX 的 **27 条 `script-response-body`** 依赖 QX 脚本 API，Shadowrocket 不兼容，已从本版本剔除。这部分 App 的开屏拦截会缺失（通常仍被分流 `REJECT` 兜底），其余 **760 条** 重写正常。
+1. **776 条 URL 重写需要 MITM**：不开启 MITM 并信任证书，重写（`url reject*`）不会生效；此时只有分流规则（1183 条 `REJECT`）起作用。
+2. **脚本规则已省略**：QX 的 **27 条 `script-response-body`** 依赖 QX 脚本 API，Shadowrocket 不兼容，已从本版本剔除。这部分 App 的开屏拦截会缺失（通常仍被分流 `REJECT` 兜底），其余 **776 条** 重写正常。
 3. **动作沿用 Surge 语法**：`reject` / `reject-200` / `reject-img` / `reject-dict` 等为 Surge/Shadowrocket 通用写法；若极个别旧版 Shadowrocket 报错，可统一替换为 `reject`。
 4. **`FINAL,DIRECT` 表示不接管代理**：想要科学上网，请把 `FINAL,DIRECT` 改成你的策略组/节点，或改用你自己的主配置 + 方式 B/C 叠加去广告。
 5. **安全性**：MITM 会解密这些域名的流量；已剔除银行/政务/医疗/支付类域名（见 `NOTICE.md`）。
