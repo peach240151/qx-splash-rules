@@ -237,7 +237,7 @@ https://raw.githubusercontent.com/peach240151/qx-splash-rules/main/QX-Lazy-Globa
 
 QX 的 `[mitm]` 主机名默认写在配置里，改了它就要重新导入整份配置。官方支持**重写资源自带 `hostname` 行并自动合并**（见 QX `sample-import-rewrite.snippet`），所以可以把主机名单独做成一条订阅：
 
-1. 本仓库的 `QX-MITM-Hosts.conf` 就是一条重写资源，只托管 464 个 MITM 主机名。
+1. 本仓库的 `QX-MITM-Hosts.conf` 就是一条重写资源，只托管 459 个 MITM 主机名。
 2. **新版懒人配置（`QX-Lazy.conf` / `QX-Lazy-Global.conf`）已内置这条订阅**，导入即生效，无需任何手动操作。
 3. 如果你**沿用的是旧配置、又不想重导**：在 QX「设置 → 重写 → 右上角 ＋ → 添加资源」手动加一次：
    `https://raw.githubusercontent.com/peach240151/qx-splash-rules/main/QX-MITM-Hosts.conf`，tag 随意（如 `MITM主机名`）。
