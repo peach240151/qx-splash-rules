@@ -102,10 +102,10 @@ https://raw.githubusercontent.com/peach240151/qx-splash-rules/main/QX-Lazy-Globa
 |---|---|---|---|
 | `QX-Lazy.conf` | 完整配置 | 重写部分需要 | **懒人配置（无节点版）**。参考 Orz-3 骨架改写，去掉依赖机场节点的策略组，不装节点也能用；10 条上游订阅（含 MITM 主机名订阅，MITM 不再内联）+ 国内 DNS 优化，`final, direct`。 |
 | `QX-Lazy-Global.conf` | 完整配置 | 重写部分需要 | **懒人配置（海外/国内分流版）**。在上面基础上加 `[server_remote]` 占位 + 4 条 RuleGo 分流规则，`final, proxy`；需自备机场订阅。 |
-| `QX-Splash-AdBlock.list` | 分流规则 | ❌ 不需要 | 一次性快照。1183 条去重规则：305 HOST + 795 HOST-SUFFIX + 31 HOST-KEYWORD + 47 IP-CIDR + 4 IP6-CIDR + 1 USER-AGENT，含墨鱼补充分流行、神机通用去广告域名、运营商广告/统计域名与番茄小说去广告，并阻断 HTTPDNS 绕过。 |
+| `QX-Splash-AdBlock.list` | 分流规则 | ❌ 不需要 | 一次性快照。1185 条去重规则：306 HOST + 796 HOST-SUFFIX + 31 HOST-KEYWORD + 47 IP-CIDR + 4 IP6-CIDR + 1 USER-AGENT，含墨鱼补充分流行、神机通用去广告域名、运营商广告/统计域名与番茄小说去广告，并阻断 HTTPDNS 绕过。 |
 | `QX-Carrier-Ads.list` | 分流规则 | ❌ 不需要 | **运营商广告/统计域名**（自托管）22 条：移动·咪咕/联通/电信·天翼 的广告、统计、推送子域 + 常见 DNS 劫持域名；全 REJECT。懒人配置已作为第 4 条分流源自动订阅。 |
-| `QX-Splash-AdBlock.conf` | 重写规则 | ✅ 需要 | 一次性快照。803 条重写（原始 835 条，按 URL pattern 去重并修正瑕疵后；来源 hwind 112 + 墨鱼 475 + 神机 248 + 番茄小说 16）+ 464 个 MITM 主机（已按安全策略收敛）。 |
-| `QX-MITM-Hosts.conf` | 重写资源 | — | **MITM 主机名订阅（免重导）**。本身是一条重写资源，只托管 464 个 MITM 主机名；在 QX「设置 → 重写 → 添加资源」加一次后，QX 会自动合并其中的 hostname 并随订阅每日更新，以后更新主机名无需重导整份配置。 |
+| `QX-Splash-AdBlock.conf` | 重写规则 | ✅ 需要 | 一次性快照。803 条重写（原始 835 条，按 URL pattern 去重并修正瑕疵后；来源 hwind 112 + 墨鱼 475 + 神机 248 + 番茄小说 16）+ 459 个 MITM 主机（已按安全策略收敛）。 |
+| `QX-MITM-Hosts.conf` | 重写资源 | — | **MITM 主机名订阅（免重导）**。本身是一条重写资源，只托管 459 个 MITM 主机名；在 QX「设置 → 重写 → 添加资源」加一次后，QX 会自动合并其中的 hostname 并随订阅每日更新，以后更新主机名无需重导整份配置。 |
 
 ## 🚀 使用方法（单独订阅快照时）
 
@@ -128,7 +128,7 @@ https://raw.githubusercontent.com/peach240151/qx-splash-rules/main/QX-Lazy-Globa
    ```
 2. 「设置」→「MITM」→ 开启，并把 `.conf` 里 `[mitm]` 段的 `hostname` 全部加入，然后安装并信任证书。
 
-> ⚠️ MITM 主机清单仍有 464 条，开启后 QX 会解密这些域名的流量（已剔除银行/政务/医疗/支付类）。若只想去开屏、担心性能或隐私，可只用分流规则，或按需裁剪 hostname。
+> ⚠️ MITM 主机清单仍有 459 条，开启后 QX 会解密这些域名的流量（已剔除银行/政务/医疗/支付类）。若只想去开屏、担心性能或隐私，可只用分流规则，或按需裁剪 hostname。
 >
 > ⚠️ 部分重写规则为 `script-response-body`，依赖 [ddgksf2013/Scripts](https://github.com/ddgksf2013/Scripts) 仓库中的 JS 脚本，请确保 QX 能访问 GitHub raw。
 
@@ -181,12 +181,12 @@ https://raw.githubusercontent.com/peach240151/qx-splash-rules/main/QX-Lazy-Globa
 | 文件 | 用途 |
 |---|---|
 | `shadowrocket/Shadowrocket-AdBlock.conf` | **完整配置**，直接导入 Shadowrocket（含 `[General]`/`[Rule]`/`[URL Rewrite]`/`[MITM]`，默认 `FINAL,DIRECT` 纯去广告） |
-| `shadowrocket/Shadowrocket-AdBlock.list` | **规则集**（1183 条，Surge/Shadowrocket 格式），用于 `RULE-SET` 远程订阅或合并进自己的配置 |
+| `shadowrocket/Shadowrocket-AdBlock.list` | **规则集**（1185 条，Surge/Shadowrocket 格式），用于 `RULE-SET` 远程订阅或合并进自己的配置 |
 | `shadowrocket/Shadowrocket-Rewrite.conf` | **重写补充片段**（仅 `[URL Rewrite]` + `[MITM]`），已有配置时合并用 |
 
 - 完整配置：`https://raw.githubusercontent.com/peach240151/qx-splash-rules/main/shadowrocket/Shadowrocket-AdBlock.conf`
 - 规则集：`https://raw.githubusercontent.com/peach240151/qx-splash-rules/main/shadowrocket/Shadowrocket-AdBlock.list`
-- 转换说明：`HOST→DOMAIN`、`HOST-SUFFIX→DOMAIN-SUFFIX`、`HOST-KEYWORD→DOMAIN-KEYWORD`、`IP-CIDR/IP6-CIDR→…,no-resolve`；**27 条 QX `script-response-body` 脚本规则 Shadowrocket 不兼容，已省略**（其余 776 条 URL 重写生效）。
+- 转换说明：`HOST→DOMAIN`、`HOST-SUFFIX→DOMAIN-SUFFIX`、`HOST-KEYWORD→DOMAIN-KEYWORD`、`IP-CIDR/IP6-CIDR→…,no-resolve`；**27 条 QX `script-response-body` 脚本规则 Shadowrocket 不兼容，已省略**（其余 803 条 URL 重写生效）。
 - 详细导入步骤与注意事项见 [shadowrocket/README.md](shadowrocket/README.md)。
 
 ## 📊 规则组成
