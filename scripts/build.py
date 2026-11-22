@@ -572,6 +572,23 @@ def emit(r):
                 'hostname = ' + ', '.join(r['keep_hosts']) + '\n')
     if write_if_changed(os.path.join(ROOT, 'QX-MITM-Hosts.conf'), mitm_txt): changed.append('QX-MITM-Hosts.conf')
 
+    # ---------- QX-Splash-Rewrite.conf（远程重写资源格式：无段头，纯重写行 + hostname） ----------
+    rw_hdr = [
+        '# NAME: QX-Splash-Rewrite',
+        '# AUTHOR: qx-splash-rules (aggregated; see NOTICE.md)',
+        '# DESC: 开屏广告重写规则（可直接作为 Quantumult X 远程重写资源订阅；末尾 hostname 行会被自动合并）',
+        '# UPDATED: %s (auto-sync)' % today,
+    ]
+    rw_body = []
+    for label, lines in r['rw_blocks']:
+        rw_body.append('')
+        rw_body.append('# ---------- %s ----------' % label)
+        rw_body.extend(lines)
+    rwconf_txt = ('\n'.join(rw_hdr + rw_body).rstrip('\n') + '\n'
+                  'hostname = ' + ', '.join(r['keep_hosts']) + '\n')
+    if write_if_changed(os.path.join(ROOT, 'QX-Splash-Rewrite.conf'), rwconf_txt):
+        changed.append('QX-Splash-Rewrite.conf')
+
     # ---------- Shadowrocket ----------
     conv = {'HOST': 'DOMAIN', 'HOST-SUFFIX': 'DOMAIN-SUFFIX', 'HOST-KEYWORD': 'DOMAIN-KEYWORD', 'USER-AGENT': 'USER-AGENT'}
     sr_rules = []
