@@ -22,6 +22,11 @@ UA_QX = 'Quantumult-X/1.0'
 GH = 'https://raw.githubusercontent.com'
 CDN = 'https://cdn.jsdelivr.net/gh'
 
+# 本仓库地址：用于把重写里引用的第三方 JS 指向仓库内镜像（scripts/js/）
+SELF_REPO = os.environ.get('GITHUB_REPOSITORY') or 'peach240151/qx-splash-rules'
+SELF_RAW = GH + '/' + SELF_REPO + '/main'
+JS_DIR = os.path.join(ROOT, 'scripts', 'js')
+
 SOURCES = {
     'splash':      (GH + '/hwind2021/QuantumultX-AdBlock-CN/main/quantumultx/filter/Splash-Killer.list',
                     CDN + '/hwind2021/QuantumultX-AdBlock-CN@main/quantumultx/filter/Splash-Killer.list'),
@@ -91,7 +96,6 @@ def filter_hosts(hosts):
         seen.add(k); keep.append(hh)
     return keep, dropped
 
-# ---------- MITM prune (only hosts covering a non-rejected rewrite target) ----------
 def _tok(pat):
     p = re.sub(r'^\^', '', pat.strip())
     p = re.sub(r'^https?\??:', '', p)
@@ -155,6 +159,129 @@ def prune_hosts(entries, buckets, rw_blocks):
         if any(_covers(e, tk) for e in uniq) and not any(_covers(e, tk) for e in keep):
             risk.append(tk)
     return keep, len(uniq), len(tokens), len(ntok), risk
+
+# ---------- zero-risk de-dup: rules already covered by a broader rule ----------
+def dedupe_filter(buckets):
+    """删掉被更宽规则完全覆盖的分流条目（行为不变）。
+
+    HOST-SUFFIX x 同时匹配 x 本身，所以 HOST,x 与 HOST-SUFFIX,x 并存时 HOST 多余；
+    HOST-KEYWORD k 命中集合 ⊇ 同名/更长后缀，故 k 是 suffix 的后缀时也多余。
+    """
+    suf = [v.lower() for v in buckets['HOST-SUFFIX']]
+    def covered(h):
+        hl = h.lower()
+        for s in suf:
+            if hl == s or hl.endswith('.' + s):
+                return s
+        return None
+    dropped = {}
+    for kind in ('HOST', 'HOST-KEYWORD'):
+        keep, gone = [], []
+        for v in buckets[kind]:
+            s = covered(v)
+            if s:
+                gone.append((v, s))
+            else:
+                keep.append(v)
+        buckets[kind] = keep
+        dropped[kind] = gone
+    return dropped
+
+def filter_covered_hosts(hosts, buckets):
+    """删掉已被分流层 REJECT 的 MITM 主机（连接在握手前就被丢弃，MITM 永不触发）。"""
+    exact = {v.lower() for v in buckets['HOST']}
+    suf = [v.lower() for v in buckets['HOST-SUFFIX']]
+    kws = [v.lower() for v in buckets['HOST-KEYWORD']]
+    keep, dropped = [], []
+    for h in hosts:
+        hl = h.lower()
+        if '*' in hl:                      # 通配主机可能覆盖未拦截子域，保守保留
+            keep.append(h); continue
+        hit = hl in exact
+        if not hit:
+            for s in suf:
+                if hl == s or hl.endswith('.' + s):
+                    hit = True; break
+        if not hit:
+            for k in kws:
+                if k in hl:
+                    hit = True; break
+        if hit:
+            dropped.append(h)
+        else:
+            keep.append(h)
+    return keep, dropped
+
+# ---------- JS mirror: 把重写引用的第三方脚本收进本仓库 ----------
+SCRIPT_RE = re.compile(r'(url\s+(?:script[\w-]*|jsonjq-response-body)\s+)(https?://\S+)')
+
+def _cdn_of(url):
+    if url.startswith(GH + '/') and '/refs/heads/' in url:
+        return url.replace(GH + '/', CDN + '/', 1).replace('/refs/heads/', '@', 1)
+    return None
+
+def mirror_scripts(rw_blocks):
+    """把 rw 行里引用外部 JS 的 URL 指向本仓库 scripts/js/<name>，并把文件同步进来。
+
+    下载失败但仓库已有镜像时继续用镜像；两边都没有才保留原始上游地址。
+    """
+    os.makedirs(JS_DIR, exist_ok=True)
+    offline = os.environ.get('QX_NO_DOWNLOAD', '').strip().lower() in ('1', 'true', 'yes')
+    stats = dict(new=[], same=[], failed=[], rewritten=0, external=0)
+    out = []
+    for label, lines in rw_blocks:
+        new_lines = []
+        for s in lines:
+            m = SCRIPT_RE.search(s)
+            if not m:
+                new_lines.append(s); continue
+            url = m.group(2)
+            if url.startswith(SELF_RAW):
+                new_lines.append(s); continue
+            stats['external'] += 1
+            name = url.split('/')[-1].split('?')[0]
+            if not name.endswith('.js'):
+                stats['failed'].append(name)
+                new_lines.append(s); continue
+            path = os.path.join(JS_DIR, name)
+            data = None
+            for u in (() if offline else (url, _cdn_of(url))):
+                if not u:
+                    continue
+                try:
+                    req = urllib.request.Request(u, headers={'User-Agent': 'Mozilla/5.0 (ruleset-builder)'})
+                    with urllib.request.urlopen(req, timeout=45) as resp:
+                        data = resp.read()
+                    # 拒绝错误页/空响应，避免把 HTML 或 404 文本当脚本镜像
+                    if not data or len(data) < 8 or data.startswith(b'404:') \
+                            or data.lstrip()[:1] == b'<':
+                        data = None
+                    else:
+                        break
+                except Exception:
+                    data = None
+            if data is not None:
+                old = None
+                if os.path.exists(path):
+                    with io.open(path, 'rb') as f:
+                        old = f.read()
+                if old != data:
+                    with io.open(path, 'wb') as f:
+                        f.write(data)
+                    if name not in stats['new']:
+                        stats['new'].append(name)
+                elif name not in stats['same']:
+                    stats['same'].append(name)
+            elif os.path.exists(path):
+                if name not in stats['same']:
+                    stats['same'].append(name)
+            else:
+                stats['failed'].append(name)
+                new_lines.append(s); continue
+            new_lines.append(s[:m.start(2)] + SELF_RAW + '/scripts/js/' + name + s[m.end(2):])
+            stats['rewritten'] += 1
+        out.append((label, new_lines))
+    return out, stats
 
 # ---------- fetch ----------
 def fetch(key):
@@ -301,6 +428,9 @@ def build():
             if k in seen:
                 continue
             seen.add(k); buckets[t].append(v)
+
+    # ---- 零风险去重：删掉已被更宽 HOST-SUFFIX 覆盖的 HOST / HOST-KEYWORD ----
+    dropped_rules = dedupe_filter(buckets)
     counts = {t: len(buckets[t]) for t in order}
     total = sum(counts.values())
 
@@ -330,6 +460,9 @@ def build():
         if kept:
             rw_blocks.append((label, kept))
 
+    # ---- 第三方 JS 收进本仓库镜像（防上游删库/改内容），重写 URL 改指向镜像 ----
+    rw_blocks, mir = mirror_scripts(rw_blocks)
+
     # ---- hostnames: union upstream -> prune (only cover non-rejected rewrite) -> safety filter ----
     all_hosts = []
     all_hosts += parse_mitm_list(mitm)
@@ -338,6 +471,9 @@ def build():
     all_hosts += parse_hostname_conf(fq_rw)
     pruned, n_entries, n_tokens, n_ntok, risk = prune_hosts(all_hosts, buckets, rw_blocks)
     keep_hosts, host_drop = filter_hosts(pruned)
+    # ---- 零风险：域已被分流 REJECT 的主机，MITM 永不触发，删除 ----
+    keep_hosts, covered_hosts = filter_covered_hosts(keep_hosts, buckets)
+    host_drop['rejected_by_filter'] = len(covered_hosts)
     MH = len(keep_hosts)
     host_drop['prune_removed'] = n_entries - len(pruned)
     host_drop['risk'] = len(risk)
@@ -346,7 +482,8 @@ def build():
 
     today = datetime.date.today().isoformat()
     return dict(counts=counts, total=total, buckets=buckets, rw_blocks=rw_blocks, rw_count=rw_count,
-                keep_hosts=keep_hosts, MH=MH, host_drop=host_drop, today=today)
+                keep_hosts=keep_hosts, MH=MH, host_drop=host_drop, today=today,
+                mir=mir, dropped_rules=dropped_rules, covered_hosts=covered_hosts)
 
 def write_if_changed(path, text):
     def norm(s):
