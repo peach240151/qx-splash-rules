@@ -44,9 +44,11 @@
 
 ## 三、更新
 
-懒人配置里的远程资源（1 条分流 + 1 条重写，MITM 主机名内联在重写源末尾）全部指向本仓库快照，由 GitHub Actions 每天 04:00（UTC+8）跟随上游重建，导入后无需重新导入。
+懒人配置直接订阅各家上游原始规则：hwind 的 Splash-Killer / BlockHttpDNS / AdBlock-Splash、墨鱼 StartUpAds、神机 Advertising、番茄 FanQieNovel，外加自建的运营商广告列表与 MITM 主机名列表。每条都写了 `update-interval=86400`，由 QX 每天自己拉上游最新版，导入后无需重新导入。
 
-重写规则里引用的第三方 JS 已全部镜像到本仓库 `scripts/js/`，上游删库或改内容都不影响使用（见 [NOTICE.md](NOTICE.md)）。
+仓库里的快照（`QX-Splash-AdBlock.list` / `.conf` / `QX-Splash-Rewrite.conf` 与 Shadowrocket 三件）由 GitHub Actions 每天 04:00（UTC+8）重新合并上游生成，供不想配多条订阅、或要用小火箭版的人使用。
+
+本仓库另有一份合并快照（`QX-Splash-AdBlock.list` / `QX-Splash-AdBlock.conf`），由 GitHub Actions 每天 04:00（UTC+8）跟随上游重建，供「方式 B」手动订阅用；快照里引用的第三方 JS 已镜像到 `scripts/js/`，上游删库也不受影响（见 [NOTICE.md](NOTICE.md)）。懒人配置走上游链接时，脚本由上游实时提供。
 
 ---
 
