@@ -35,3 +35,13 @@
 ## 本仓库自身
 
 本仓库的脚本、配置骨架与文档编排代码采用 MIT 许可（见 LICENSE）。规则数据不在 MIT 覆盖范围内。
+
+## scripts/js/ — 第三方脚本镜像
+
+`scripts/js/` 下的脚本镜像自以下上游，仅用于确保本规则引用的脚本在上游删改后仍可用；
+脚本版权归原作者，遵循其仓库原有许可：
+
+- `ddgksf2013/Scripts`（多为 `master` 分支下的 js，如 coolapk.js、startup.js、zhihu_openads.js 等）
+- `app2smile/rules`（`js/baidumap.js`）
+
+`scripts/build.py` 每次构建会自动同步这些文件：下载失败时沿用仓库已有镜像，网络仍失败才回退指向上游地址。
