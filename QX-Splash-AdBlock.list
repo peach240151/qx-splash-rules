@@ -7,72 +7,45 @@
 #   - DivineEngine 神机规则  Advertising.list  (经 HengLiu2282/DivineEngine 镜像)
 #   - privacy-protection-tools/anti-AD  → 运营商广告/统计域名（QX-Carrier-Ads.list）
 #   - zqzess/rule_for_quantumultX  FanQieNovel.snippet  番茄小说去广告
-# UPDATED: 2026-11-17 (auto-sync)
+# UPDATED: 2026-11-22 (auto-sync)
 # POLICY: REJECT
-# HOST : 306
+# HOST : 261
 # HOST-SUFFIX : 796
-# HOST-KEYWORD : 31
+# HOST-KEYWORD : 22
 # IP-CIDR : 47
 # IP6-CIDR : 4
 # USER-AGENT : 1
-# TOTAL: 1185
+# TOTAL: 1131
 # DESC: 综合去广告规则：开屏广告 SDK + 墨鱼补充 + 阻断 HTTPDNS + 神机通用 + 运营商广告 + 番茄小说。仅需分流规则，无需 MITM。
 
 # ---------- HOST ----------
-HOST,abtest-ch.snssdk.com,REJECT
-HOST,ad.partner.gifshow.com,REJECT
 HOST,adapi.inlcorp.com,REJECT
-HOST,adapi.izuiyou.com,REJECT
-HOST,adashx.ut.amap.com,REJECT
-HOST,adashx.ut.ele.me,REJECT
-HOST,adashx.ut.youku.com,REJECT
 HOST,ads-sdk.is.com,REJECT
 HOST,adse.kuaishou.com,REJECT
 HOST,aktrack.pubmatic.edgekey.net,REJECT
-HOST,alimama.cn,REJECT
 HOST,an.facebook.com,REJECT
 HOST,an.yandex.ru,REJECT
 HOST,api-ad.kuaishou.com,REJECT
 HOST,cdn-lb.vungle.akadns.net,REJECT
 HOST,cdn-store-icons-akamai-prd.unityads.unity3d.com.edgekey.net,REJECT
-HOST,cm.ad.gifshow.com,REJECT
 HOST,doubleclickbygoogle.com,REJECT
 HOST,doubleclicks.me,REJECT
-HOST,e.kuaishou.com,REJECT
 HOST,etgdta.com,REJECT
-HOST,gecko-hl.snssdk.com,REJECT
-HOST,gecko-lq.snssdk.com,REJECT
 HOST,gecko-pangle-lf.snssdk.com,REJECT
-HOST,h-adashx.ut.ele.me,REJECT
-HOST,h-adashx.ut.youku.com,REJECT
-HOST,h-adashx4yt.ut.taobao.com,REJECT
-HOST,hao123union.baidu.com,REJECT
 HOST,howubdgdt.com,REJECT
 HOST,i-lq.snssdk.com,REJECT
 HOST,i.snssdk.com,REJECT
 HOST,i16-tb.isnssdk.com.edgekey.net,REJECT
-HOST,impressiondesk.com,REJECT
 HOST,isub.snssdk.com,REJECT
-HOST,mercury-sdk.snssdk.com,REJECT
 HOST,pangle.io.edgekey.net,REJECT
 HOST,pubmatic.edgekey.net,REJECT
 HOST,rpc-tapjoy-com-lb-1378811527.us-east-1.elb.amazonaws.com,REJECT
 HOST,security-lq.snssdk.com,REJECT
 HOST,sgsnssdk.com.edgekey.net,REJECT
 HOST,tapjoy-com-lb-vpc-332546193.us-east-1.elb.amazonaws.com,REJECT
-HOST,tbm.snssdk.com,REJECT
-HOST,tnc3-aliec2.snssdk.com,REJECT
-HOST,tnc3-alisc1.snssdk.com,REJECT
-HOST,toblog.snssdk.com,REJECT
-HOST,toutiao-frontier.snssdk.com,REJECT
-HOST,ug.snssdk.com,REJECT
 HOST,unityads.unity3d.com.edgekey.net,REJECT
-HOST,v6-adashx.ut.amap.com,REJECT
 HOST,v6-adashx.ut.cainiao.com,REJECT
-HOST,v6-adashx.ut.ele.me,REJECT
-HOST,v6-adashx.ut.taobao.com,REJECT
 HOST,vungle.akadns.net,REJECT
-HOST,xladapi.izuiyou.com,REJECT
 HOST,xogvagdtgehxm.com,REJECT
 HOST,dns.jd.com,REJECT
 HOST,dns.weibo.cn,REJECT
@@ -107,7 +80,6 @@ HOST,ads.daydaycook.com.cn,REJECT
 HOST,ads.flurry.com,REJECT
 HOST,ads.storm8.com,REJECT
 HOST,ads.superawesome.tv,REJECT
-HOST,ads.weilitoutiao.net,REJECT
 HOST,adsapi.manhuaren.com,REJECT
 HOST,adsdk.dmzj.com,REJECT
 HOST,adserver.pandora.com,REJECT
@@ -116,7 +88,6 @@ HOST,adshow.58.com,REJECT
 HOST,adui.tg.meitu.com,REJECT
 HOST,adv.bandi.so,REJECT
 HOST,adv.ettoday.net,REJECT
-HOST,api.ad.xiaomi.com,REJECT
 HOST,api.adnet.mob.com,REJECT
 HOST,api-ad.kajicam.com,REJECT
 HOST,appnext.hs.llnwd.net,REJECT
@@ -124,13 +95,11 @@ HOST,appnext-a.akamaihd.net,REJECT
 HOST,business-cdn.shouji.sogou.com,REJECT
 HOST,g.ousns.net,REJECT
 HOST,ggs.myzaker.com,REJECT
-HOST,ggx.cmvideo.cn,REJECT
 HOST,itad.linetv.tw,REJECT
 HOST,ma-adx.ctrip.com,REJECT
 HOST,mads.suning.com,REJECT
 HOST,mobileads.msn.com,REJECT
 HOST,mopnativeadv.037201.com,REJECT
-HOST,nativeadv.dftoutiao.com,REJECT
 HOST,toots-a.akamaihd.net,REJECT
 HOST,ad.51wnl-cq.com,REJECT
 HOST,adextra.51wnl-cq.com,REJECT
@@ -138,7 +107,6 @@ HOST,log.51wnl-cq.com,REJECT
 HOST,r.51wnl-cq.com,REJECT
 HOST,tunion-api.m.taobao.com,REJECT
 HOST,ad.mobile.youku.com,REJECT
-HOST,iyes.youku.com,REJECT
 HOST,pl.cp31.ott.cibntv.net,REJECT
 HOST,optimus-ads.amap.com,REJECT
 HOST,optimus-ads.amap.com.w.alikunlun.com,REJECT
@@ -153,14 +121,10 @@ HOST,adm3.autoimg.cn,REJECT
 HOST,afd.baidu.com,REJECT
 HOST,als.baidu.com,REJECT
 HOST,duclick.baidu.com,REJECT
-HOST,mobads.baidu.com,REJECT
-HOST,mobads-logs.baidu.com,REJECT
 HOST,nadvideo2.baidu.com,REJECT
 HOST,nsclick.baidu.com,REJECT
 HOST,t7z.cupid.iqiyi.com,REJECT
 HOST,t7z.cupid.ptqy.gitv.tv,REJECT
-HOST,ad.toutiao.com,REJECT
-HOST,pangolin.snssdk.com,REJECT
 HOST,advertise.baicizhan.com,REJECT
 HOST,advertise.baicizhan.org,REJECT
 HOST,adx.yiche.com,REJECT
@@ -228,7 +192,6 @@ HOST,ads.aplusapi.pptv.com,REJECT
 HOST,asimgs.pplive.cn,REJECT
 HOST,de.as.pptv.com,REJECT
 HOST,regist.fotoable.com,REJECT
-HOST,cdn.adapi.fotoable.com,REJECT
 HOST,adnew.wifi8.com,REJECT
 HOST,adfile.wifi8.com,REJECT
 HOST,ad-analysis.pconline.com.cn,REJECT
@@ -253,17 +216,12 @@ HOST,imp.optaim.com,REJECT
 HOST,v2.reachmax.cn,REJECT
 HOST,hui.sohu.com,REJECT
 HOST,adsmind.apdcdn.tc.qq.com,REJECT
-HOST,adsmind.gdtimg.com,REJECT
 HOST,adsmind.tc.qq.com,REJECT
-HOST,pgdt.gtimg.cn,REJECT
-HOST,pgdt.gtimg.com,REJECT
-HOST,pgdt.ugdtimg.com,REJECT
 HOST,splashqqlive.gtimg.com,REJECT
 HOST,wa.gtimg.com,REJECT
 HOST,wxsnsdy.wxs.qq.com,REJECT
 HOST,wxsnsdythumb.wxs.qq.com,REJECT
 HOST,ad.tencentmusic.com,REJECT
-HOST,adserviceretry.kugou.com,REJECT
 HOST,ads.service.kugou.com,REJECT
 HOST,adsfile.bssdlbig.kugou.com,REJECT
 HOST,g.koowo.com,REJECT
@@ -285,7 +243,6 @@ HOST,app-ad.variflight.com,REJECT
 HOST,adlog.vivo.com.cn,REJECT
 HOST,adreq.vivo.com.cn,REJECT
 HOST,ads-marketing-vivofs.vivo.com.cn,REJECT
-HOST,adsdk.vivo.com.cn,REJECT
 HOST,adsstatic.vivo.com.cn,REJECT
 HOST,adxlog.vivo.com.cn,REJECT
 HOST,vcardsdkservice.vivo.com.cn,REJECT
@@ -318,12 +275,10 @@ HOST,p6-ad-sign.byteimg.com,REJECT
 HOST,p9-ad-sign.byteimg.com,REJECT
 HOST,dig.bdurl.net,REJECT
 HOST,activity-ag.awemeughun.com,REJECT
-HOST,mcs.snssdk.com,REJECT
 HOST,is.snssdk.com,REJECT
 HOST,msync-im1-vip6-std.easemob.com,REJECT
 HOST,apd-pcdnwxlogin.teg.tencent-cloud.net,REJECT
 HOST,api.iegadp.qq.com,REJECT
-HOST,sf3-ttcdn-tos.pstatp.com,REJECT
 HOST,v6-novelapp.ixigua.com,REJECT
 
 # ---------- HOST-SUFFIX ----------
@@ -1129,29 +1084,20 @@ HOST-KEYWORD,-adapi,REJECT
 HOST-KEYWORD,.adapi,REJECT
 HOST-KEYWORD,ad-server,REJECT
 HOST-KEYWORD,ad-union,REJECT
-HOST-KEYWORD,ad.toutiao.com,REJECT
-HOST-KEYWORD,adash.man.aliyuncs.com,REJECT
 HOST-KEYWORD,admob,REJECT
 HOST-KEYWORD,adnxs,REJECT
 HOST-KEYWORD,adsdk,REJECT
 HOST-KEYWORD,adservice,REJECT
-HOST-KEYWORD,adshare.toutiao.com,REJECT
 HOST-KEYWORD,adsrvr,REJECT
 HOST-KEYWORD,advertising.,REJECT
 HOST-KEYWORD,advertisingapi,REJECT
 HOST-KEYWORD,adxapi,REJECT
-HOST-KEYWORD,afpapi.alimama.com,REJECT
 HOST-KEYWORD,applovin,REJECT
-HOST-KEYWORD,bds.snssdk.com,REJECT
-HOST-KEYWORD,dm.toutiao.com,REJECT
 HOST-KEYWORD,doubleclick.,REJECT
-HOST-KEYWORD,extlog.snssdk.com,REJECT
 HOST-KEYWORD,inmobi,REJECT
-HOST-KEYWORD,mobads.baidu.com,REJECT
 HOST-KEYWORD,openx,REJECT
 HOST-KEYWORD,pangolin-sdk-toutiao,REJECT
 HOST-KEYWORD,pglstatp-toutiao,REJECT
-HOST-KEYWORD,sdfp.snssdk.com,REJECT
 HOST-KEYWORD,splashad,REJECT
 HOST-KEYWORD,union-ad,REJECT
 HOST-KEYWORD,stsdk.vivo.com.cn,REJECT
