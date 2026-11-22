@@ -46,6 +46,8 @@
 
 懒人配置订阅的是上游每日更新源，导入后无需重新导入；快照与 Shadowrocket 版由仓库 GitHub Actions 每天 04:00（UTC+8）自动重建。
 
+重写规则里引用的第三方 JS 已全部镜像到本仓库 `scripts/js/`，上游删库或改内容都不影响使用（见 [NOTICE.md](NOTICE.md)）。
+
 ---
 
 ## 数据来源与致谢
