@@ -1,6 +1,6 @@
 # QX-Splash-AdBlock · Shadowrocket 版
 # 由 QX 综合去开屏规则转换
-# 规则 1131 条（全 REJECT）｜URL 重写 776 条｜MITM 主机 431 个
+# 规则 1131 条（全 REJECT）｜URL 重写 774 条｜MITM 主机 426 个
 # UPDATED: 2026-11-22 · 详见 NOTICE.md / LICENSE
 
 DOMAIN,adapi.inlcorp.com,REJECT
