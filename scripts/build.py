@@ -154,6 +154,11 @@ def prune_hosts(entries, buckets, rw_blocks):
         if ee.lower() in seenE: continue
         seenE.add(ee.lower()); uniq.append(ee)
     keep = [e for e in uniq if any(_covers(e, tk) for tk in ntok)]
+    # ---- 零风险：被本列表内通配条目（*.x.com）覆盖的普通主机重复，删除 ----
+    wilds = [e.lower().lstrip('*').lstrip('.') for e in keep if '*' in e]
+    if wilds:
+        keep = [e for e in keep
+                if ('*' in e) or not any(e.lower().endswith('.' + w) for w in wilds)]
     risk = []
     for tk in ntok:
         if any(_covers(e, tk) for e in uniq) and not any(_covers(e, tk) for e in keep):
@@ -186,6 +191,13 @@ def dedupe_filter(buckets):
         buckets[kind] = keep
         dropped[kind] = gone
     return dropped
+
+SENS_HOST = ('alipay.com', 'alipay.cn', 'tenpay.com', 'wechatpay', 'helipay',
+             'yeepay', 'paypal', 'unionpay', '95516', '99bill', 'cgbchina')
+
+def is_sensitive(h):
+    hl = h.strip().lower().lstrip('*').lstrip('.')
+    return any(s in hl for s in SENS_HOST)
 
 def filter_covered_hosts(hosts, buckets):
     """删掉已被分流层 REJECT 的 MITM 主机（连接在握手前就被丢弃，MITM 永不触发）。"""
@@ -473,7 +485,24 @@ def build():
     keep_hosts, host_drop = filter_hosts(pruned)
     # ---- 零风险：域已被分流 REJECT 的主机，MITM 永不触发，删除 ----
     keep_hosts, covered_hosts = filter_covered_hosts(keep_hosts, buckets)
+    # ---- 安全：支付/金融域不做 MITM；其对应重写行同时移除（无 MITM 也是死规则）----
+    sens_hosts = [h for h in keep_hosts if is_sensitive(h)]
+    if sens_hosts:
+        keep_hosts = [h for h in keep_hosts if not is_sensitive(h)]
+        nb = []
+        for label, lines in rw_blocks:
+            kept = []
+            for s in lines:
+                tk = _tok(re.split(r'\s+url\s+', s)[0].strip())
+                if tk and is_sensitive(tk[1]):
+                    continue
+                kept.append(s)
+            if kept:
+                nb.append((label, kept))
+        rw_blocks = nb
+        rw_count = sum(len(x[1]) for x in rw_blocks)
     host_drop['rejected_by_filter'] = len(covered_hosts)
+    host_drop['sensitive'] = len(sens_hosts)
     MH = len(keep_hosts)
     host_drop['prune_removed'] = n_entries - len(pruned)
     host_drop['risk'] = len(risk)
