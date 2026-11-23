@@ -7,15 +7,15 @@
 #   - DivineEngine 神机规则  Advertising.list  (经 HengLiu2282/DivineEngine 镜像)
 #   - privacy-protection-tools/anti-AD  → 运营商广告/统计域名（QX-Carrier-Ads.list）
 #   - zqzess/rule_for_quantumultX  FanQieNovel.snippet  番茄小说去广告
-# UPDATED: 2026-11-22 (auto-sync)
+# UPDATED: 2026-11-23 (auto-sync)
 # POLICY: REJECT
 # HOST : 261
-# HOST-SUFFIX : 796
+# HOST-SUFFIX : 797
 # HOST-KEYWORD : 22
 # IP-CIDR : 47
 # IP6-CIDR : 4
 # USER-AGENT : 1
-# TOTAL: 1131
+# TOTAL: 1132
 # DESC: 综合去广告规则：开屏广告 SDK + 墨鱼补充 + 阻断 HTTPDNS + 神机通用 + 运营商广告 + 番茄小说。仅需分流规则，无需 MITM。
 
 # ---------- HOST ----------
@@ -489,6 +489,7 @@ HOST-SUFFIX,kde.qq.com,REJECT
 HOST-SUFFIX,kuaishouzt.com,REJECT
 HOST-SUFFIX,leiki-doubleclick-proxy.appspot.com,REJECT
 HOST-SUFFIX,lf-static.tiktokpangle-cdn-us.com,REJECT
+HOST-SUFFIX,liveandhadapickup.org,REJECT
 HOST-SUFFIX,load.sst.lasadapippen.com,REJECT
 HOST-SUFFIX,log-hl.snssdk.com,REJECT
 HOST-SUFFIX,log-sdk.gifshow.com,REJECT
