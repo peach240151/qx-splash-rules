@@ -226,6 +226,24 @@ def filter_covered_hosts(hosts, buckets):
 
 # ---------- JS mirror: 把重写引用的第三方脚本收进本仓库 ----------
 SCRIPT_RE = re.compile(r'(url\s+(?:script[\w-]*|jsonjq-response-body)\s+)(https?://\S+)')
+DEAD_SCRIPTS = {
+    # 这些 script 规则永远不会触发，脚本与规则一并移除（详见 NOTICE.md「已停用脚本」）：
+    'abchina.js',          # 主机 mobilepaas.abchina.com.cn 按「银行域」剔出 MITM -> 无法解密
+    'quark.js',            # 主机 open-cms-api.(uc|quark).cn 带交替，MITM 主机名无法精确覆盖
+    '12306.js',            # 主机 ad.12306.cn 已被分流 REJECT，连接在握手前即断
+    '555Ad.js',            # 上游模式 [a-zA-Z0-9_-]+(\.[...]){1,4} 为泛主机通配，无具体 hostname 可 MITM
+    'amdc.js',             # 同上（泛主机通配）
+    'ahfs.js',             # 上游模式 .*(xbwpys|ahhhhfs)\.com 为通配主机
+    'fly.js',              # 上游模式 .*flyert.* 为通配主机
+    'hanglvzongheng.js',   # 上游模式 .*umetrip\.com\.cn 为通配主机
+}
+
+def script_name(s):
+    m = SCRIPT_RE.search(s)
+    if not m:
+        return None
+    return m.group(2).rstrip('/').split('/')[-1].split('?')[0]
+
 
 def _cdn_of(url):
     if url.startswith(GH + '/') and '/refs/heads/' in url:
@@ -472,6 +490,22 @@ def build():
         if kept:
             rw_blocks.append((label, kept))
 
+    # ---- B1：移除永不触发的 script 规则（主机不在 MITM / 已被分流 REJECT / 上游为通配主机）----
+    dead_rw = []
+    nb = []
+    for label, lines in rw_blocks:
+        kept = []
+        for s in lines:
+            nm = script_name(s)
+            if nm in DEAD_SCRIPTS:
+                dead_rw.append(nm)
+                continue
+            kept.append(s)
+        if kept:
+            nb.append((label, kept))
+    rw_blocks = nb
+    rw_count = sum(len(x[1]) for x in rw_blocks)
+
     # ---- 第三方 JS 收进本仓库镜像（防上游删库/改内容），重写 URL 改指向镜像 ----
     rw_blocks, mir = mirror_scripts(rw_blocks)
 
@@ -512,7 +546,7 @@ def build():
     today = datetime.date.today().isoformat()
     return dict(counts=counts, total=total, buckets=buckets, rw_blocks=rw_blocks, rw_count=rw_count,
                 keep_hosts=keep_hosts, MH=MH, host_drop=host_drop, today=today,
-                mir=mir, dropped_rules=dropped_rules, covered_hosts=covered_hosts)
+                mir=mir, dropped_rules=dropped_rules, covered_hosts=covered_hosts, dead_rw=dead_rw)
 
 def write_if_changed(path, text):
     def norm(s):
@@ -567,29 +601,14 @@ def emit(r):
     list_txt = '\n'.join(hdr + body).rstrip('\n') + '\n'
     if write_if_changed(os.path.join(ROOT, 'QX-Splash-AdBlock.list'), list_txt): changed.append('QX-Splash-AdBlock.list')
 
-    # ---------- QX-Splash-AdBlock.conf ----------
-    conf_hdr = [
-        '# NAME: QX-Splash-AdBlock-Rewrite',
-        '# AUTHOR: qx-splash-rules (aggregated; see NOTICE.md)',
-        '# SOURCES:',
-        '#   - hwind2021/QuantumultX-AdBlock-CN  AdBlock-Splash.conf + MITM.list',
-        '#   - ddgksf2013/ddgksf2013  墨鱼去开屏2.0 StartUpAds.conf (400+ App)',
-        '#   - DivineEngine 神机规则  Advertising.conf (经 HengLiu2282/DivineEngine 镜像)',
-        '#   - zqzess/rule_for_quantumultX  FanQieNovel.qxrewrite  番茄小说去广告',
-        '# UPDATED: %s (auto-sync)' % today,
-        '# DESC: 开屏广告精准重写 + 墨鱼逐 App + 神机通用 + 番茄小说去章末广告。需开启 MITM 并信任证书 (%d 个 hostname)。' % r['MH'],
-        '# NOTE: 27 条 script-* 依赖的外部 JS 与解析器已固定到 commit SHA；MITM 已按「仅广告相关」收敛，详见 NOTICE.md。',
-        '# WARN: skip_validating_cert 请保持 false（官方默认），勿关闭 MITM 证书校验。',
-        '',
-        '[rewrite_local]',
-    ]
-    body = []
-    for i, (label, lines) in enumerate(r['rw_blocks']):
-        body.append('')
-        body.append('# ---------- %s ----------' % label)
-        body.extend(lines)
-    conf_txt = '\n'.join(conf_hdr + body) + '\n\n[mitm]\nhostname = ' + ', '.join(r['keep_hosts']) + '\n'
-    if write_if_changed(os.path.join(ROOT, 'QX-Splash-AdBlock.conf'), conf_txt): changed.append('QX-Splash-AdBlock.conf')
+    # ---------- 已停止生成：QX-Splash-AdBlock.conf ----------
+    # 与 QX-Splash-Rewrite.conf 内容完全相同（只多 [rewrite_local]/[mitm] 段头），
+    # 而作为远程重写资源时 QX 不认段头，故这份整份导入格式不再生成；历史文件一并删除。
+    _stale = os.path.join(ROOT, 'QX-Splash-AdBlock.conf')
+    if os.path.exists(_stale):
+        os.remove(_stale)
+        changed.append('QX-Splash-AdBlock.conf (removed)')
+
 
     # ---------- QX-MITM-Hosts.conf ----------
     mitm_txt = ('# NAME: QX 综合去开屏 MITM 主机名\n'
@@ -617,6 +636,14 @@ def emit(r):
                   'hostname = ' + ', '.join(r['keep_hosts']) + '\n')
     if write_if_changed(os.path.join(ROOT, 'QX-Splash-Rewrite.conf'), rwconf_txt):
         changed.append('QX-Splash-Rewrite.conf')
+
+    # ---------- 清理已停用的死脚本镜像 ----------
+    jsd = os.path.join(ROOT, 'scripts', 'js')
+    for _nm in sorted(DEAD_SCRIPTS):
+        _p = os.path.join(jsd, _nm)
+        if os.path.exists(_p):
+            os.remove(_p)
+            changed.append('scripts/js/%s (removed)' % _nm)
 
     # ---------- Shadowrocket ----------
     conv = {'HOST': 'DOMAIN', 'HOST-SUFFIX': 'DOMAIN-SUFFIX', 'HOST-KEYWORD': 'DOMAIN-KEYWORD', 'USER-AGENT': 'USER-AGENT'}
@@ -646,11 +673,13 @@ def emit(r):
                 '\n'.join(sr_rules) + '\n')
     if write_if_changed(os.path.join(sob, 'Shadowrocket-AdBlock.list'), list_txt): changed.append('shadowrocket/Shadowrocket-AdBlock.list')
 
-    rw_supp = ('# Shadowrocket 重写补充片段（仅 [URL Rewrite] + [MITM]）\n'
-               '# 用法：若你已有自己的 config，把下面两段合并进去即可；否则直接导入 Shadowrocket-AdBlock.conf。\n'
-               '# 注意：QX 的 %d 条 script-response-body 脚本规则 Shadowrocket 不兼容，已省略。\n\n' % script +
-               '[URL Rewrite]\n' + '\n'.join(rw_lines) + '\n\n[MITM]\nhostname = ' + hosts_csv + '\n')
-    if write_if_changed(os.path.join(sob, 'Shadowrocket-Rewrite.conf'), rw_supp): changed.append('shadowrocket/Shadowrocket-Rewrite.conf')
+    # ---------- 已停止生成：shadowrocket/Shadowrocket-Rewrite.conf ----------
+    # 内容 100% 已包含在 Shadowrocket-AdBlock.conf 里，保留只会造成重复维护。
+    _stale2 = os.path.join(sob, 'Shadowrocket-Rewrite.conf')
+    if os.path.exists(_stale2):
+        os.remove(_stale2)
+        changed.append('shadowrocket/Shadowrocket-Rewrite.conf (removed)')
+
 
     conf = ('# QX-Splash-AdBlock · Shadowrocket 完整配置\n'
             '# 导入：Shadowrocket → 配置文件 → 添加 → 从文件/URL 导入\n'
@@ -699,7 +728,10 @@ def update_readme(r, changed):
 if __name__ == '__main__':
     r = build()
     # attach buckets for emit
+    dead_list = sorted(set(r.get('dead_rw') or []))
+    dead_n = len(r.get('dead_rw') or [])
     out = emit(r)
     print('BUILD total=%d  rw=%d  MH=%d' % (out['total'], out['rw'], out['MH']))
     print('counts:', out['counts'])
+    print('dead_scripts_removed_rules:', dead_n, dead_list)
     print('changed:', out['changed'] if out['changed'] else '(none)')
