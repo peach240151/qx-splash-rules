@@ -11,7 +11,7 @@
 | 懒人配置（无节点，装了就能用） | `https://raw.githubusercontent.com/peach240151/qx-splash-rules/main/QX-Lazy.conf` |
 | 懒人配置·海外分流版（需机场订阅） | `https://raw.githubusercontent.com/peach240151/qx-splash-rules/main/QX-Lazy-Global.conf` |
 | 分流规则快照（无需 MITM） | `https://raw.githubusercontent.com/peach240151/qx-splash-rules/main/QX-Splash-AdBlock.list` |
-| 重写规则快照（需 MITM） | `https://raw.githubusercontent.com/peach240151/qx-splash-rules/main/QX-Splash-AdBlock.conf` |
+| 重写规则快照（需 MITM） | `https://raw.githubusercontent.com/peach240151/qx-splash-rules/main/QX-Splash-Rewrite.conf` |
 
 ### 配置步骤
 
@@ -23,7 +23,7 @@
 **方式 B · 只订阅快照**
 
 1. 风车 →「配置文件」→ 右上角 `+` →「远程资源」→ 类型选「分流规则」→ 填 `QX-Splash-AdBlock.list` → 策略保持 `REJECT` → 保存后长按该资源更新（无需 MITM）。
-2. 需要重写再添一条「重写规则」→ 填 `QX-Splash-AdBlock.conf` → 设置 → MITM → 开启 → 导入其中 `hostname` 并安装信任证书。
+2. 需要重写再添一条「重写规则」→ 填 `QX-Splash-Rewrite.conf`（主机名已写在文件末尾，QX 会自动合并，不用再手动导入）→ 设置 → MITM → 开启并信任证书。
 
 ### 注意
 
@@ -38,7 +38,6 @@
 |---|---|
 | `https://raw.githubusercontent.com/peach240151/qx-splash-rules/main/shadowrocket/Shadowrocket-AdBlock.conf` | 完整配置，直接导入（含 `[General]`/`[Rule]`/`[URL Rewrite]`/`[MITM]`，`FINAL,DIRECT` 纯去广告） |
 | `https://raw.githubusercontent.com/peach240151/qx-splash-rules/main/shadowrocket/Shadowrocket-AdBlock.list` | 规则集，用于 `RULE-SET` 远程订阅 |
-| `https://raw.githubusercontent.com/peach240151/qx-splash-rules/main/shadowrocket/Shadowrocket-Rewrite.conf` | 重写补充片段，已有配置时合并用 |
 
 导入步骤与注意事项见 [shadowrocket/README.md](shadowrocket/README.md)。
 
@@ -46,9 +45,9 @@
 
 懒人配置直接订阅各家上游原始规则：hwind 的 Splash-Killer / BlockHttpDNS / AdBlock-Splash、墨鱼 StartUpAds、神机 Advertising、番茄 FanQieNovel，外加自建的运营商广告列表与 MITM 主机名列表。每条都写了 `update-interval=86400`，由 QX 每天自己拉上游最新版，导入后无需重新导入。
 
-仓库里的快照（`QX-Splash-AdBlock.list` / `.conf` / `QX-Splash-Rewrite.conf` 与 Shadowrocket 三件）由 GitHub Actions 每天 04:00（UTC+8）重新合并上游生成，供不想配多条订阅、或要用小火箭版的人使用。
+仓库里的快照（`QX-Splash-AdBlock.list` / `QX-Splash-Rewrite.conf` 与 Shadowrocket 两件）由 GitHub Actions 每天 04:00（UTC+8）重新合并上游生成，供不想配多条订阅、或要用小火箭版的人使用。
 
-本仓库另有一份合并快照（`QX-Splash-AdBlock.list` / `QX-Splash-AdBlock.conf`），由 GitHub Actions 每天 04:00（UTC+8）跟随上游重建，供「方式 B」手动订阅用；快照里引用的第三方 JS 已镜像到 `scripts/js/`，上游删库也不受影响（见 [NOTICE.md](NOTICE.md)）。懒人配置走上游链接时，脚本由上游实时提供。
+本仓库的合并快照（`QX-Splash-AdBlock.list` / `QX-Splash-Rewrite.conf`），由 GitHub Actions 每天 04:00（UTC+8）跟随上游重建，供「方式 B」手动订阅用；快照里引用的第三方 JS 已镜像到 `scripts/js/`，上游删库也不受影响（见 [NOTICE.md](NOTICE.md)）。懒人配置走上游链接时，脚本由上游实时提供。
 
 ---
 
